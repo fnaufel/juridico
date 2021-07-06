@@ -1,0 +1,471 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
+% juridico.sty
+% ============
+% 
+% Copyright 2008 Fernando Náufel do Amaral (fnaufel@gmail.com)
+% 
+% Pacote LaTeX2e para formatação de textos jurídicos (regimentos, resoluções, etc.)
+% 
+% Version: 1.1 (November 2008)
+% 
+% For documentation and usage instructions, see file exemplojuridico.tex
+% 	
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+% 
+% The Current Maintainer of this work is Fernando Náufel do Amaral (fnaufel@gmail.com)
+%
+% This work consists of the files juridico.sty and exemplojuridico.tex
+% and the derived file exemplojuridico.pdf.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{juridico}[2008/11/14 Typesetting bylaws, statutes etc.]
+
+\RequirePackage{textcomp}
+\RequirePackage{fncylab}
+\RequirePackage{ifthen}
+\RequirePackage{eqlist}
+\RequirePackage[loadonly]{titlesec}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
+% In order to number articles:
+\setcounter{secnumdepth}{5}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
+% Extra mrgin for alineas
+\newlength{\alineaextramargin}
+\setlength{\alineaextramargin}{0pt}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
+% Fixing unwanted spaces after \label{...}:
+\let\oldlabel\label
+\renewcommand{\label}[1]{\oldlabel{#1}\ignorespaces}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
+% For printing a sequence of references:
+\newif\ifsecondorlateritem
+
+\def\endtoken{\end}
+
+\def\processrefs#1,{%
+	\def\thisitem{#1}%
+	\ifx\thisitem\endtoken%
+		\let\next=\relax%
+	\else%
+		\ifsecondorlateritem%
+			,\ %
+		\fi
+		\secondorlateritemtrue%
+		\refformat{\ref{\gobblespaces#1}}%
+		\let\next=\processrefs%
+	\fi
+	\next
+}
+
+\def\gobblespaces#1{\if#1 {}\else#1\fi}
+
+
+%%%%%%%%%%%% Locale-dependent strings %%%%%%%%%%%%%%%%%%%
+
+\newcommand{\tituloname}{T\'\i tulo}
+\newcommand{\titulorefname}{t\'\i tulo}
+\newcommand{\titulorefnameplural}{t\'\i tulos}
+
+\newcommand{\capituloname}{Cap\'\i tulo}
+\newcommand{\capitulorefname}{cap\'\i tulo}
+\newcommand{\capitulorefnameplural}{cap\'\i tulos}
+
+\newcommand{\secaoname}{Se\c{c}\~ao}
+\newcommand{\secaorefname}{se\c{c}\~ao}
+\newcommand{\secaorefnameplural}{se\c{c}\~oes}
+
+\newcommand{\subsecaoname}{Subse\c{c}\~ao}
+\newcommand{\subsecaorefname}{subse\c{c}\~ao}
+\newcommand{\subsecaorefnameplural}{subse\c{c}\~oes}
+
+\newcommand{\artigoname}{Art.}
+\newcommand{\artigorefname}{art.}
+\newcommand{\artigorefnameplural}{artigos}
+
+\newcommand{\paragrafouniconame}{Par\'agrafo~\'unico}
+
+\newcommand{\incisorefname}{inciso}
+\newcommand{\incisorefnameplural}{incisos}
+
+\newcommand{\alinearefname}{al\'\i nea}
+\newcommand{\alinearefnameplural}{al\'\i neas}
+
+
+%%%%%%%%%%%% Titles %%%%%%%%%%%%%%%%%%%
+
+\titleclass{\titulo}[0]{straight}
+
+\newcounter{titulo}
+\renewcommand{\thetitulo}{\Roman{titulo}}
+
+\titleformat{\titulo}
+	[display]														% shape: label on one line, heading text on another
+	{\normalfont\large\bfseries\centering}					% format
+	{\textsc{\tituloname} \thetitulo}				% label
+	{.5ex}															% sep btwn label and heading text
+	{\textsc}														% before-code
+	[\setcounter{capitulo}{0}%
+	 \setcounter{secao}{0}%
+	 \setcounter{subsecao}{0}]					% after-code
+	
+\titlespacing{\titulo}
+	{0pt}																% increase in the left margin
+	{*6}																% vertical space before title (*n = n ex, with some stretchability)
+	{*3}																% space between title and following text
+	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+
+%%%%%%% Title references %%%%%%%%%%%%
+
+\newcommand{\reftit}[1]{%
+	\titulorefname~\ref{#1}%
+}
+
+\def\reftits#1{%
+	{%
+		\titulorefnameplural~%
+		\secondorlateritemfalse%
+		\def\refformat##1{##1}%
+		\processrefs#1,\end,%
+	}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+
+
+%%%%%%%%%%%% Chapters %%%%%%%%%%%%%%%%%
+
+\titleclass{\capitulo}{straight}[\titulo]
+
+\newcounter{capitulo}
+\renewcommand{\thecapitulo}{\Roman{capitulo}}
+
+\titleformat{\capitulo}
+	[display]														% shape: label on one line, heading text on another
+	{\normalfont\normalsize\bfseries\centering}		% format
+	{\textsc{\capituloname} \thecapitulo}		% label
+	{.5ex}															% sep btwn label and heading text
+	{\textsc}														% before-code
+	[\setcounter{secao}{0}%
+	 \setcounter{subsecao}{0}]					% after-code
+	
+\titlespacing{\capitulo}
+	{0pt}																% increase in the left margin
+	{*5}																% vertical space before title (*n = n ex, with some stretchability)
+	{*3}																% space between title and following text
+	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+
+%%%%%%% Chapter references %%%%%%%%%%%%
+
+\newcommand{\refcap}[1]{%
+	\capitulorefname~\ref{#1}%
+}
+
+\def\refcaps#1{%
+	{%
+		\capitulorefnameplural~%
+		\secondorlateritemfalse%
+		\def\refformat##1{##1}%
+		\processrefs#1,\end,%
+	}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+
+
+%%%%%%%%%%%% Sections %%%%%%%%%%%%%%%%%
+
+\titleclass{\secao}{straight}[\capitulo]
+
+\newcounter{secao}
+\renewcommand{\thesecao}{\Roman{secao}}
+
+\titleformat{\secao}
+	[display]														% shape: label on one line, heading text on another
+	{\normalfont\normalsize\bfseries\centering}		% format
+	{\secaoname\ \thesecao}										% label
+	{.5ex}															% sep btwn label and heading text
+	{}																	% before-code
+	[\setcounter{subsecao}{0}]					% after-code
+	
+\titlespacing{\secao}
+	{0pt}																% increase in the left margin
+	{*4}																% vertical space before title (*n = n ex, with some stretchability)
+	{*2}																% space between title and following text
+	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+
+%%%%%%% Section references %%%%%%%%%%%%
+
+\newcommand{\refsec}[1]{%
+	\secaorefname~\ref{#1}%
+}
+
+\def\refsecs#1{%
+	{%
+		\secaorefnameplural~%
+		\secondorlateritemfalse%
+		\def\refformat##1{##1}%
+		\processrefs#1,\end,%
+	}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+
+
+%%%%%%%%%%%% Subsections %%%%%%%%%%%%%%%%%
+
+\titleclass{\subsecao}{straight}[\secao]
+
+\newcounter{subsecao}
+\renewcommand{\thesubsecao}{\Roman{subsecao}}
+
+\titleformat{\subsecao}
+	[display]														% shape: label on one line, heading text on another
+	{\normalfont\normalsize\bfseries\centering}		% format
+	{\subsecaoname\ \thesubsecao}										% label
+	{.5ex}															% sep btwn label and heading text
+	{}																	% before-code
+	
+\titlespacing{\subsecao}
+	{0pt}																% increase in the left margin
+	{*4}																% vertical space before title (*n = n ex, with some stretchability)
+	{*1}																% space between title and following text
+	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+
+%%%%%%% Subsection references %%%%%%%%%%%%
+
+\newcommand{\refsubsec}[1]{%
+	\subsecaorefname~\ref{#1}%
+}
+
+\def\refsubsecs#1{%
+	{%
+		\subsecaorefnameplural~%
+		\secondorlateritemfalse%
+		\def\refformat##1{##1}%
+		\processrefs#1,\end,%
+	}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+
+%%%%%%%%%%%% Articles %%%%%%%%%%%%%%%%%
+
+\newcounter{artigo}
+\renewcommand{\theartigo}{%
+	\arabic{artigo}%
+}	
+
+\newboolean{onedigitartigo}
+\newcommand{\artigo}[1][ ]{%
+	\def\emptyartigooptarg{ }%
+	\def\receivedartigooptarg{#1}%
+	\ifx \receivedartigooptarg\emptyartigooptarg \def\artigooptarg{} \else \def\artigooptarg{~\textbf{(#1)}} \fi%
+	\setcounter{paragrafo}{0}%
+	\ifthenelse{\value{artigo} < 9}%
+		{\setboolean{onedigitartigo}{true}\labelformat{artigo}{\theartigo\textordmasculine}}%
+		{\setboolean{onedigitartigo}{false}\labelformat{artigo}{\theartigo}}%
+	\vskip 2ex%
+	\refstepcounter{artigo}%
+	\noindent\normalfont\normalsize\rmfamily%
+	\mbox{%
+		\textbf{%
+			\artigoname\ \theartigo%
+			\ifthenelse{\boolean{onedigitartigo}}{\textordmasculine}{}%
+			\artigooptarg%
+			.%
+			~~%
+		}%
+	}%
+	\ignorespaces%
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+
+%%%%%%% Article references %%%%%%%%%%%%
+
+\newcommand{\refart}[1]{%
+	\artigorefname~\ref{#1}%
+}
+
+\def\refarts#1{%
+	{%
+		\artigorefnameplural~%
+		\secondorlateritemfalse%
+		\def\refformat##1{##1}%
+		\processrefs#1,\end,%
+	}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+
+
+%%%%%%%%%%%% Paragraphs %%%%%%%%%%%%%%%%%
+
+\newcounter{paragrafo}
+\renewcommand{\theparagrafo}{%
+	\arabic{paragrafo}%
+}	
+
+\newboolean{onedigitparagrafo}
+\newcommand{\paragrafo}{%
+	\setlength{\alineaextramargin}{\parindent}%  Alineas within paragraphs need extra indenting
+	\ifthenelse{\value{paragrafo} < 9}%
+		{\setboolean{onedigitparagrafo}{true}\labelformat{paragrafo}{\theparagrafo\textordmasculine}}%
+		{\setboolean{onedigitparagrafo}{false}\labelformat{paragrafo}{\theparagrafo}}%
+	\vskip 1ex%
+	\refstepcounter{paragrafo}%
+	\indent\normalfont\normalsize\rmfamily%
+	\mbox{%
+		\textbf{%
+			\S~\theparagrafo%
+			\ifthenelse{\boolean{onedigitparagrafo}}{\textordmasculine}{}%
+	% 			.%
+		}%
+		~~%
+	}%
+	\ignorespaces%
+}
+
+\newcommand{\paragrafounico}{%
+	\setlength{\alineaextramargin}{\parindent}%  Alineas within paragraphs need extra indenting
+	\vskip 1ex%
+	\indent\normalfont\normalsize\rmfamily%
+	\mbox{%
+		\textbf{\paragrafouniconame.}%
+		~~%
+	}%
+	\ignorespaces%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+
+%%%%%% Paragraph references %%%%%%%%%%%
+
+\newcommand{\refpar}[1]{%
+	\S~\ref{#1}%
+}
+
+\def\refpars#1{%
+	{%
+		\S\S~%
+		\secondorlateritemfalse%
+		\def\refformat##1{##1}%
+		\processrefs#1,\end,%
+	}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+
+%%%%%%%%%%% Incisos %%%%%%%%%%%%%%%%%%%	
+
+\newcounter{inciso}
+
+\renewcommand{\theinciso}{%
+	\Roman{inciso}%
+}	
+
+\newenvironment{incisos}
+	{%
+		\setlength{\alineaextramargin}{0pt}% alineas within incisos do not need extra indenting
+		\begin{eqlist}%
+			\setcounter{inciso}{0}%
+	}
+	{\end{eqlist}}
+	
+\newcommand{\inciso}{%
+	\refstepcounter{inciso}%
+	\item[\hfill\textbf{\theinciso}~--]%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+
+%%%%%% Inciso references %%%%%%%%%%%
+
+\newcommand{\refinciso}[1]{%
+	\incisorefname~\ref{#1}%
+}
+
+\def\refincisos#1{%
+	{%
+		\incisorefnameplural~%
+		\secondorlateritemfalse%
+		\def\refformat##1{##1}%
+		\processrefs#1,\end,%
+	}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+
+%%%%%%%%%%% Alineas %%%%%%%%%%%%%%%%%%%	
+
+\newcounter{alinea}
+
+\renewcommand{\thealinea}{%
+	\alph{alinea}%
+}	
+
+\newenvironment{alineas}
+	{%
+		\begin{eqlist}[%
+			\eqlistinit%
+			\addtolength{\leftmargin}{\alineaextramargin}%  possibly add extra indenting
+		]%
+			\setcounter{alinea}{0}%
+	}
+	{%
+		\end{eqlist}%
+		\addtolength{\leftmargin}{-\alineaextramargin}%  possibly subtract extra indenting
+	}
+	
+\newcommand{\alinea}{%
+	\refstepcounter{alinea}%
+	\item[\hfill\textbf{\thealinea)}]%
+}
+
+%%%%%% Alínea references %%%%%%%%%%%
+
+\newcommand{\refalinea}[1]{%
+	\alinearefname~(\ref{#1})%
+}
+
+\def\refalineas#1{%
+	{%
+		\alinearefnameplural~%
+		\secondorlateritemfalse%
+		\def\refformat##1{(##1)}%
+		\processrefs#1,\end,%
+	}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+

@@ -1,0 +1,248 @@
+\documentclass{article} 
+\usepackage[brazil]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{url}
+
+\usepackage{juridico}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+\title{%
+	Exemplo de Uso do Pacote \texttt{juridico.sty}\\
+	(versão 1.1)%
+}
+
+\author{%
+	Fernando Náufel do Amaral\\
+	\url{fnaufel@gmail.com}%
+}
+
+\date{Novembro de 2008}
+
+
+\begin{document}
+
+\maketitle
+
+\titulo{Introdução}
+
+	\artigo Este documento explica, através de um exemplo, o uso do pacote \texttt{juridico.sty}.
+	
+
+\titulo{Da Invocação do Pacote}
+
+	\artigo O pacote é invocado através de \verb+\usepackage{juridico}+.
+	
+		\paragrafo O arquivo \texttt{juridico.sty} deve estar em algum local onde o \LaTeX\ possa encontrá-lo. A maneira mais fácil de garantir isto é colocar o arquivo \texttt{juridico.sty} no mesmo diretório do documento \LaTeX\ que se deseja criar.
+		
+		\paragrafo O pacote não comporta opções.
+		
+	\artigo O pacote é compatível com qualquer classe de documento do \LaTeX.
+	
+	\artigo O pacote requer que os seguintes pacotes estejam instalados no sistema:
+	
+		\begin{incisos}
+			
+			\inciso \texttt{textcomp}
+
+			\inciso \texttt{fncylab}
+			
+			\inciso \texttt{ifthen}
+			
+			\inciso \texttt{eqlist}
+
+			\inciso \texttt{titlesec}
+
+		\end{incisos}
+		
+		\paragrafounico Estes pacotes podem ser obtidos em \url{www.ctan.org}.
+		
+	\artigo Outros pacotes podem ser usados em conjunto com \texttt{juridico.sty}. Este documento, por exemplo, usa os pacotes \texttt{url}, \texttt{babel}, \texttt{inputenc} e \texttt{fontenc}.
+	
+		\paragrafounico O pacote \texttt{babel} é necessário para que a separação de sílabas do texto se dê de acordo com as normas do português.
+	
+	
+\titulo{Do Uso do Pacote}
+
+	\capitulo{Da Estrutura do Documento}
+	
+		\secao{Redação Jurídica}
+		
+			\subsecao{Conceitos Básicos}
+			
+				\artigo \label{art:esquema} Segundo uma variação do esquema adotado no Brasil, a estrutura de um documento jurídico consiste de
+				
+					\begin{incisos}
+						
+						\inciso Títulos
+						
+						\inciso Capítulos
+						
+						\inciso Seções
+						
+						\inciso Subseções
+						
+						\inciso Artigos
+						
+					\end{incisos}
+					
+				\artigo \label{art:hierarquia} Os itens citados nos incisos do \refart{art:esquema} formam uma hierarquia. 
+					
+					\paragrafo \label{par:omissao} Níveis podem ser omitidos. Por exemplo, pode ocorrer que um título consista apenas de seções, e estas, de artigos. 
+					
+					\paragrafo \label{par:usual} Usualmente, há apenas a presença dos artigos e de elementos dos 2~primeiros níveis (títulos e/ou capítulos).
+					
+				\artigo Um artigo pode conter, além do \emph{caput} (texto principal), parágrafos e incisos.
+				
+					\paragrafo O \emph{caput} contém a norma geral e o princípio básico do assunto sobre o qual versa o artigo.
+					
+					\paragrafo \label{par:defpar} Os parágrafos contêm as exceções e informações complementares. Por exemplo:
+					
+						\begin{alineas}
+							
+							\alinea O \refpar{par:omissao} do \refart{art:hierarquia} é um exemplo de exceção ao \emph{caput}.
+							
+							\alinea O \refpar{par:usual} do \refart{art:hierarquia} é um exemplo de informação complementar ao \emph{caput}.
+							
+						\end{alineas}
+					
+					\paragrafo Quando o assunto requer discriminações, o enunciado compõe o \emph{caput} do artigo, e os elementos de discriminação são apresentados sob a forma de incisos. O \refart{art:esquema} é um exemplo.
+					
+					\paragrafo Parágrafos e incisos podem ser desdobrados em alíneas. Por exemplo: o \refpar{par:defpar} do presente artigo contém duas alíneas.
+
+			\subsecao{Fontes de Referência}
+			
+				\artigo \label{art:fontes} O desenvolvimento do pacote se baseou nas seguintes fontes:
+				
+					\begin{incisos}
+						
+						\inciso \label{inc:manualPres} \url{www.planalto.gov.br/Ccivil_03/manual/ManualRedPR2aEd.PDF}
+						
+						\inciso \label{inc:manualTecn} \url{www.tj.sp.gov.br/museu/redacao/TécnicaRedaçãoForense.pdf}
+						
+					\end{incisos}
+
+			
+		\secao{Dos Recursos do Pacote}
+		
+			\artigo[Dos comandos oferecidos] O pacote oferece os seguintes comandos para criar os elementos do esquema descrito no \refart{art:esquema}:
+			
+				\begin{incisos}
+					
+					\inciso \verb+\titulo{xxx}+ cria um título de nome ``\verb+xxx+''.
+							
+					\inciso \verb+\capitulo{xxx}+ cria um capítulo de nome ``\verb+xxx+''.
+					
+					\inciso \verb+\secao{xxx}+ cria uma seção de nome ``\verb+xxx+''.
+					
+					\inciso \verb+\subsecao{xxx}+ cria uma subseção de nome ``\verb+xxx+''.
+					
+					\inciso \verb+\artigo+ cria um artigo. Note que artigos não têm nome, mas o comando \verb+\artigo+ admite um argumento opcional contendo o tópico sobre o qual versa o artigo. O presente artigo, por exemplo, foi iniciado com o comando \verb+\artigo[Dos comandos oferecidos]+.
+					
+				\end{incisos}
+				
+				\paragrafounico O pacote cuida da numeração e da formatação dos elementos, seguindo as normas estipuladas nas fontes de referência dos  \refincisos{inc:manualPres, inc:manualTecn} do \refart{art:fontes}.
+				
+			\artigo \label{art:par} Para criar parágrafos, o pacote oferece os comandos:
+			 
+			 	\begin{incisos}
+			 		
+			 		\inciso \label{inc:parnum} \verb+\paragrafo+ para criar um parágrafo numerado.
+			 		
+			 		\inciso \label{inc:parunico} \verb+\paragrafounico+ para criar um parágrafo único, sem número.
+			 		
+			 	\end{incisos}
+			 	
+			 	\paragrafounico Cabe ao autor usar o comando correto para cada situação. Em outras palavras, o pacote não impede a criação de um único parágrafo numerado em um artigo, nem a criação de vários parágrafos ``únicos'' em um mesmo artigo.
+			 	
+			\artigo Para incisos, o pacote oferece o ambiente \verb+incisos+, dentro do qual é usado o comando \verb+\inciso+ para criar um inciso.
+			
+				\paragrafo Por exemplo, os \refincisos{inc:parnum, inc:parunico} do \refart{art:par} foram criados da seguinte forma:
+				\begin{verbatim}
+					\begin{incisos}
+			 		
+			 			\inciso \verb+\paragrafo+ para criar um parágrafo numerado.
+			 		
+			 			\inciso \verb+\paragrafounico+ para criar um parágrafo único...
+			 		
+\end{incisos}
+				\end{verbatim}
+
+			\artigo Para alíneas, o pacote oferece o ambiente \verb+alineas+, dentro do qual é usado o comando \verb+\alinea+ para criar uma alínea, de forma análoga ao que ocorre com os incisos.
+			
+			\artigo O pacote não controla a formatação do título do documento (no sentido do \LaTeX); este deve continuar sendo produzido através dos comandos \verb+\title+, \verb+\author+, \verb+\date+, \verb+\maketitle+, etc.
+	
+	
+	\capitulo{Referências Cruzadas}
+	
+			\artigo \label{art:ref} Para produzir uma referência cruzada para um único elemento, o pacote oferece os seguintes comandos:
+			
+				\begin{incisos}
+					
+					\inciso \verb+\reftit{xxx}+ produz o texto ``título $X$'', onde ``$X$'' é o número do título rotulado pelo \emph{label} \verb+xxx+.
+					
+					\inciso \verb+\refcap{xxx}+ produz o texto ``capítulo $X$'', onde ``$X$'' é o número do capítulo rotulado pelo \emph{label} \verb+xxx+.
+					
+					\inciso \verb+\refsec{xxx}+ produz o texto ``seção $X$'', onde ``$X$'' é o número da seção rotulada pelo \emph{label} \verb+xxx+.
+					
+					\inciso \verb+\refsubsec{xxx}+ produz o texto ``subseção $X$'', onde ``$X$'' é o número da subseção rotulada pelo \emph{label} \verb+xxx+.
+					
+					\inciso \verb+\refart{xxx}+ produz o texto ``art. $X$'', onde ``$X$'' é o número do artigo rotulado pelo \emph{label} \verb+xxx+.
+					
+					\inciso \verb+\refpar{xxx}+ produz o texto ``\S~$X$'', onde ``$X$'' é o número do parágrafo rotulado pelo \emph{label} \verb+xxx+.
+					
+					\inciso \verb+\refinciso{xxx}+ produz o texto ``inciso $X$'', onde ``$X$'' é o número do inciso rotulado pelo \emph{label} \verb+xxx+.
+					
+					\inciso \verb+\refalinea{xxx}+ produz o texto ``alínea~$(x)$'', onde ``$x$'' é a letra da alínea rotulada pelo \emph{label} \verb+xxx+.
+					
+				\end{incisos}
+				
+				\paragrafo \label{par:obsref1} Não há comando para referenciar um parágrafo único. O autor deve incluir manualmente o texto ``parágrafo único'' (por extenso).
+				
+				\paragrafo \label{par:obsref2} Os comandos \verb+\label{}+ devem ser inseridos nos locais corretos, de acordo com o uso normal do \LaTeX.
+				
+				\paragrafo \label{par:obsref3} O presente documento contém diversos exemplos de uso de referências cruzadas. O leitor deve examinar o arquivo \texttt{exemplojuridico.tex}.
+
+			
+			\artigo Para produzir uma referência cruzada para um conjunto de elementos (todos do mesmo nível), o pacote oferece os seguintes comandos:
+			
+				\begin{incisos}
+					
+					\inciso \verb+\reftits{xxx,...,yyy}+ produz o texto ``títulos $X, \ldots,Y$'', contendo os números dos títulos rotulados pelos \emph{labels} especificados.
+					
+					\inciso \verb+\refcaps{xxx,...,yyy}+ produz o texto ``capítulos $X, \ldots,Y$'', contendo os números dos capítulos rotulados pelos \emph{labels} especificados.
+					
+					\inciso \verb+\refsecs{xxx,...,yyy}+ produz o texto ``seções $X, \ldots,Y$'', contendo os números das seções rotuladas pelos \emph{labels} especificados.
+					
+					\inciso \verb+\refsubsecs{xxx,...,yyy}+ produz o texto ``subseções $X, \ldots,Y$'', contendo os números das subseções rotuladas pelos \emph{labels} especificados.
+					
+					\inciso \verb+\refarts{xxx,...,yyy}+ produz o texto ``artigos $X, \ldots,Y$'', contendo os números dos artigos rotulados pelos \emph{labels} especificados.
+					
+					\inciso \verb+\refpars{xxx,...,yyy}+ produz o texto ``\S\S $X, \ldots,Y$'', contendo os números dos parágrafos rotulados pelos \emph{labels} especificados.
+					
+					\inciso \verb+\refincisos{xxx,...,yyy}+ produz o texto ``incisos $X, \ldots,Y$'', contendo os números dos incisos rotulados pelos \emph{labels} especificados.
+					
+					\inciso \verb+\refalineas{xxx,...,yyy}+ produz o texto ``alíneas $(x), \ldots,(y)$'', contendo as letras das alíneas rotuladas pelos \emph{labels} especificados.
+					
+				\end{incisos}
+				
+				\paragrafo As mesmas observações feitas nos \refpars{par:obsref1, par:obsref2, par:obsref3} do \refart{art:ref} se aplicam aqui.
+				
+				\paragrafo Os \emph{labels} devem estar separados por vírgulas.
+				
+				\paragrafo Pode haver espaço(s) depois (mas não antes) de uma vírgula.
+				
+				
+\titulo{Disposições Finais}
+
+	\artigo O pacote e sua documentação podem ser usados, copiados e distribuídos segundo os termos da licença LPPL 1.3, que pode ser obtida em \url{http://www.latex-project.org/lppl.txt}. 
+	
+	\artigo Dúvidas, sugestões e correções devem ser enviadas para o autor em \url{fnaufel@gmail.com}.
+	
+
+\end{document}
+
+
+
